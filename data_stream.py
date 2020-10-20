@@ -34,6 +34,7 @@ def run_spark_job(spark):
         .option("kafka.bootstrap.servers", "localhost:9092") \
         .option("startingOffsets", "earliest") \
         .option("subscribe", "com.udacity.sfcrimes.v1") \
+        .option("spark.default.parallelism", "cache") \
         .option("maxOffsetPerTrigger", 200).load()
 
     # Show schema for the incoming resources for checks
@@ -101,6 +102,7 @@ if __name__ == "__main__":
     spark = SparkSession \
         .builder \
         .master("local[*]") \
+        .config("spark.ui.port",3000) \
         .appName("KafkaSparkStructuredStreaming") \
         .getOrCreate()
 
